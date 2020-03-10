@@ -1,27 +1,48 @@
 import React, {useContext} from "react";
-import {View, Text, FlatList, Button, StyleSheet} from "react-native";
+import {Button, FlatList, StyleSheet, Text, TouchableOpacity, View} from "react-native";
 import {Context as BlogContext} from "../context/BlogContext";
+import {MaterialCommunityIcons} from '@expo/vector-icons';
 
 const IndexScreen = () => {
-    const {state, addBlogPost, clear} = useContext(BlogContext);
+  const {state, addBlogPost, deleteItem, clear} = useContext(BlogContext);
 
-    return <View>
-        <Text>Index Screen</Text>
-      <Button style={styles.buttonStyle} title='Add Blog Post' onPress={addBlogPost}/>
-      <Button style={styles.buttonStyle} title='Clear all' onPress={clear}/>
-        <FlatList
-         data={state}
-         renderItem={({item}) => {
-             return <Text>{item.title}</Text>
-         }}
-         keyExtractor={(item) => item.title}
-        />
+  function getRenderItem({item}) {
+    return <View style={styles.rowStyle}>
+      <Text style={styles.titleStyle}>{item.title} - {item.id}</Text>
+      <TouchableOpacity onPress={() => deleteItem(item.id)}>
+        <MaterialCommunityIcons name="delete-outline" style={styles.iconStyle}/>
+      </TouchableOpacity>
     </View>
+  }
+
+  return <View>
+    <Button style={styles.buttonStyle} title='Add Blog Post' onPress={addBlogPost}/>
+    <Button style={styles.buttonStyle} title='Clear all' onPress={clear}/>
+    <FlatList
+      data={state}
+      renderItem={getRenderItem}
+      keyExtractor={(item) => item.id}
+    />
+  </View>
 };
 
 const styles = StyleSheet.create({
   buttonStyle: {
     margin: 10
+  },
+  rowStyle: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    paddingVertical: 20,
+    paddingHorizontal: 10,
+    borderTopWidth: 1,
+    borderColor: 'gray'
+  },
+  iconStyle: {
+    fontSize: 24
+  },
+  titleStyle: {
+    fontSize: 18
   }
 });
 
