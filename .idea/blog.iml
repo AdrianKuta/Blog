@@ -6,5 +6,6 @@
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="@types/react" level="application" />
     <orderEntry type="library" name="@types/react-native" level="application" />
+    <orderEntry type="library" name="@types/react-native-material-menu" level="application" />
   </component>
 </module>

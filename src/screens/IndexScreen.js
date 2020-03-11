@@ -1,15 +1,22 @@
-import React, {useContext} from "react";
-import {Button, FlatList, StyleSheet, Text, TouchableOpacity, View} from "react-native";
-import {Context as BlogContext} from "../context/BlogContext";
-import {MaterialCommunityIcons, MaterialIcons} from "@expo/vector-icons";
+import React, { useContext } from "react";
+import {
+  Button,
+  FlatList,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View
+} from "react-native";
+import { Context as BlogContext } from "../context/BlogContext";
+import { MaterialCommunityIcons, MaterialIcons } from "@expo/vector-icons";
 
-const IndexScreen = ({navigation}) => {
-  const {state, addBlogPost, deleteItem, clear} = useContext(BlogContext);
+const IndexScreen = ({ navigation }) => {
+  const { state, deleteItem } = useContext(BlogContext);
 
-  function getRenderItem({item}) {
+  function getRenderItem({ item }) {
     return (
       <TouchableOpacity
-        onPress={() => navigation.navigate("Show", {id: item.id})}
+        onPress={() => navigation.navigate("Show", { id: item.id })}
       >
         <View style={styles.rowStyle}>
           <Text style={styles.titleStyle}>
@@ -28,26 +35,20 @@ const IndexScreen = ({navigation}) => {
 
   return (
     <View>
-      <Button
-        style={styles.buttonStyle}
-        title="Add Blog Post"
-        onPress={addBlogPost}
-      />
-      <Button style={styles.buttonStyle} title="Clear all" onPress={clear}/>
       <FlatList
         data={state}
         renderItem={getRenderItem}
-        keyExtractor={item => item.id}
+        keyExtractor={item => `${item.id}`}
       />
     </View>
   );
 };
 
-IndexScreen.navigationOptions = ({navigation}) => {
+IndexScreen.navigationOptions = ({ navigation }) => {
   return {
-    headerRight: (
-      <TouchableOpacity onPress={() => navigation.navigate('Create')}>
-        <MaterialIcons name="add" size={30}/>
+    headerRight: () => (
+      <TouchableOpacity onPress={() => navigation.navigate("Create")}>
+        <MaterialIcons name="add" size={30} />
       </TouchableOpacity>
     )
   };
