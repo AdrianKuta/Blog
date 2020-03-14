@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import {
   Button,
   FlatList,
@@ -11,7 +11,18 @@ import { Context as BlogContext } from "../context/BlogContext";
 import { MaterialCommunityIcons, MaterialIcons } from "@expo/vector-icons";
 
 const IndexScreen = ({ navigation }) => {
-  const { state, deleteItem } = useContext(BlogContext);
+  const { state, deleteItem, getBlogPosts } = useContext(BlogContext);
+
+  useEffect(() => {
+    getBlogPosts();
+    const listener = navigation.addListener("didFocus", () => {
+      getBlogPosts();
+    });
+
+    return () => {
+      listener.remove();
+    };
+  }, []);
 
   function getRenderItem({ item }) {
     return (
